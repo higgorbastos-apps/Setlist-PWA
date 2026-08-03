@@ -27,7 +27,7 @@ function renderHistory(shows) {
         show.dataShow + ' | ' + show.qtdMusicas + ' músicas' +
       '</div>' +
       '<div class="show-setlist" id="show-setlist-' + index + '" style="display: none;"></div>' +
-      '<div style="margin-top: 8px; display: flex; gap: 8px;">' +
+      '<div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">' +
         '<button class="btn btn-secondary" onclick="toggleShowSetlist(' + index + ', \'' + show.dataShow + '\')">' +
           'Ver Setlist' +
         '</button>' +
@@ -48,6 +48,11 @@ async function toggleShowSetlist(index, showId) {
   if (container.style.display === 'none' || container.style.display === '') {
     try {
       var musicas = await API.getSetlist(showId);
+      if (!musicas || musicas.length === 0) {
+        container.innerHTML = '<p style="color: #6B6960;">Nenhuma música encontrada para esta data.</p>';
+        container.style.display = 'block';
+        return;
+      }
       container.innerHTML = musicas.map(function(m, i) {
         return '<div style="padding: 4px 0; font-size: 0.9rem;">' +
           (i + 1) + '. ' + escapeHtml(m.musica) +
@@ -67,25 +72,27 @@ async function toggleShowSetlist(index, showId) {
 async function reuseSetlist(showData, local) {
   try {
     var musicas = await API.getSetlist(showData);
+    if (!musicas || musicas.length === 0) {
+      alert('Nenhuma música encontrada para este show.');
+      return;
+    }
+    
     document.getElementById('dataShow').value = showData;
     document.getElementById('local').value = local;
-    document.getElementById('listaMusicas').value = musicas.map(function(m) {
-      return m.musica;
-    }).join('\n');
     
-    // Switch to register tab
-    var registerTab = document.querySelector('[data-tab="register"]');
-    registerTab.click();
-    
-    // Parse automatically
     currentMusicas = musicas.map(function(m) {
       return {
         nome: m.musica,
         tom: m.tom || '',
         harmonia: m.harmonia || '',
-        bpm: m.bpm || ''
+        bpm: m.bpm || '',
+        letra: m.letra || ''
       };
     });
+    
+    var registerTab = document.querySelector('[data-tab="register"]');
+    if (registerTab) registerTab.click();
+    
     renderPreview();
   } catch (error) {
     alert('Erro ao carregar setlist: ' + error.message);
@@ -95,14 +102,21 @@ async function reuseSetlist(showData, local) {
 async function generateShowPDF(showId) {
   try {
     var musicas = await API.getSetlist(showId);
+    if (!musicas || musicas.length === 0) {
+      alert('Nenhuma música encontrada para gerar PDF.');
+      return;
+    }
+    
     var musicasFormatadas = musicas.map(function(m) {
       return {
         nome: m.musica,
         tom: m.tom || '',
         harmonia: m.harmonia || '',
-        bpm: m.bpm || ''
+        bpm: m.bpm || '',
+        letra: m.letra || ''
       };
     });
+    
     generatePDF(showId, musicasFormatadas);
   } catch (error) {
     alert('Erro ao gerar PDF: ' + error.message);
