@@ -104,6 +104,7 @@ function generateLetrasPDF() {
     doc.setFontSize(16);
     var titulo = (index + 1) + '. ' + musica.nome;
     if (musica.tom) titulo += ' — Tom: ' + musica.tom;
+    if (musica.harmonia) titulo += ' | Harm: ' + musica.harmonia;
     if (musica.bpm) titulo += ' | BPM: ' + musica.bpm;
     doc.text(titulo, 25, y);
     y += 12;
