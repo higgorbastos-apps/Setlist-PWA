@@ -170,7 +170,6 @@ function generateSetlistPDF() {
     
     var meta = [];
     if (musica.tom) meta.push('Tom: ' + musica.tom);
-    if (musica.harmonia) meta.push('Harm: ' + musica.harmonia);
     if (musica.bpm) meta.push('BPM: ' + musica.bpm);
     
     if (meta.length > 0) {
