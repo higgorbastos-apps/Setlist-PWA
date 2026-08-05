@@ -93,5 +93,74 @@ function escapeHtml(text) {
 }
 function toggleLetra(index) {
   var el = document.getElementById('letra-' + index);
-  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  var btn = document.getElementById('btn-pdf-' + index);
+  if (el) {
+    var isHidden = el.style.display === 'none';
+    el.style.display = isHidden ? 'block' : 'none';
+    if (btn) btn.style.display = isHidden ? 'inline-block' : 'none';
+  }
+}
+
+function gerarPDFIndividual(index) {
+  var musica = currentMusicas[index];
+  if (!musica) return;
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  var y = 25;
+  
+  // Título
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text(musica.nome, 20, y);
+  y += 14;
+  
+  // Tom
+  if (musica.tom) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('Tom: ' + musica.tom, 20, y);
+    y += 10;
+  }
+  
+  // BPM
+  if (musica.bpm) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('BPM: ' + musica.bpm, 20, y);
+    y += 10;
+  }
+  
+  // Harmonia
+  if (musica.harmonia) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('Harmonia: ' + musica.harmonia, 20, y);
+    y += 10;
+  }
+  
+  // Linha separadora
+  y += 4;
+  doc.setDrawColor(242, 183, 5);
+  doc.setLineWidth(0.5);
+  doc.line(20, y, 190, y);
+  y += 10;
+  
+  // Letra
+  if (musica.letra && musica.letra.trim()) {
+    doc.setFont('courier', 'normal');
+    doc.setFontSize(14);
+    var linhas = musica.letra.split('\n');
+    linhas.forEach(function(linha) {
+      if (y > 272) {
+        doc.addPage();
+        y = 25;
+      }
+      doc.text(linha, 20, y);
+      y += 7;
+    });
+  }
+  
+  var nomeArquivo = musica.nome.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30);
+  doc.save(nomeArquivo + '.pdf');
 }
