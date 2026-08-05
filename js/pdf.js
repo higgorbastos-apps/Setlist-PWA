@@ -108,30 +108,32 @@ function generateLetrasPDF() {
     
     // Harmonia (múltiplas linhas)
     if (musica.harmonia) {
+      // Título "Harmonia:"
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
       doc.text('Harmonia:', 20, y);
       y += 8;
+      
+      // Conteúdo da harmonia (começa na linha de baixo)
       doc.setFont('courier', 'normal');
       doc.setFontSize(12);
       var linhasHarmonia = musica.harmonia.split('\n');
       linhasHarmonia.forEach(function(linha) {
-        doc.text(linha, 25, y);
+        doc.text(linha, 20, y);
         y += 7;
       });
     }
     
-    // Espaço após última linha da harmonia até a linha amarela
-    y += 8;
+    // Uma linha vazia antes da linha amarela
+    y += 7;
     
     // Linha amarela divisória
     doc.setDrawColor(242, 183, 5);
     doc.setLineWidth(0.5);
     doc.line(20, y, 190, y);
     
-    // Espaço de 2 linhas após a linha amarela
+    // Duas linhas vazias após a linha amarela
     y += 14;
-    
     // Letra
     doc.setFont('courier', 'normal');
     doc.setFontSize(14);
@@ -194,7 +196,7 @@ function generateSetlistPDF() {
     y += 12;
   });
   
-  var nomeLocal = local.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '').substring(0, 25);
+var nomeLocal = local.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '').substring(0, 25);
 var dataFormatada = showData.replace(/-/g, '');
 doc.save('SETLIST-' + nomeLocal + '-' + dataFormatada + '.pdf');
 }
