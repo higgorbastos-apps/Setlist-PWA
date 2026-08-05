@@ -47,9 +47,9 @@ var MetadataEditor = {
             '<option value="">Personalizada...</option>' +
             harmonyHtml +
           '</select>' +
-          '<input type="text" value="' + escapeHtml(musica.harmonia || '') + '" ' +
-            'placeholder="Ou digite a harmonia" ' +
-            'onchange="MetadataEditor.setHarmony(' + index + ', this.value)">' +
+          '<textarea rows="4" onchange="MetadataEditor.setHarmony(' + index + ', this.value)" ' +
+  'style="width:100%;padding:8px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);color:var(--text-primary);font-family:IBM Plex Mono,monospace;font-size:0.85rem;resize:vertical;" ' +
+  'placeholder="Ex: INTRO: G A Bm G&#10;PARTE A: G A G A&#10;PARTE B: ...&#10;REFRÃO: B A B A B">' + escapeHtml(musica.harmonia || '') + '</textarea>' +
         '</div>' +
         '<div class="metadata-section">' +
           '<label>BPM: <strong>' + (musica.bpm || '120') + '</strong></label>' +
