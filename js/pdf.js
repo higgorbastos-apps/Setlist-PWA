@@ -65,7 +65,6 @@ function generateLetrasPDF() {
     return;
   }
   
-  // Filtrar apenas músicas com letra cadastrada
   var musicasComLetra = currentMusicas.filter(function(m) {
     return m.letra && m.letra.trim().length > 0;
   });
@@ -107,7 +106,7 @@ function generateLetrasPDF() {
       y += 10;
     }
     
-     // Harmonia
+    // Harmonia (múltiplas linhas, empurra a linha amarela para baixo)
     if (musica.harmonia) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
@@ -117,22 +116,21 @@ function generateLetrasPDF() {
       doc.setFontSize(12);
       var linhasHarmonia = musica.harmonia.split('\n');
       linhasHarmonia.forEach(function(linha) {
-        if (y > 272) { doc.addPage(); y = 25; }
-        doc.text(linha, 25, y);
         y += 6;
+        doc.text(linha, 25, y);
       });
-      y += 4;
+      y += 6;
     }
     
-    // Espaço após harmonia até a linha amarela
-    y += 8;
+    // Espaço entre harmonia e linha amarela
+    y += 6;
     
-    // Linha separadora
+    // Linha amarela divisória
     doc.setDrawColor(242, 183, 5);
     doc.setLineWidth(0.5);
     doc.line(20, y, 190, y);
     
-    // Espaço de 2 linhas após a linha amarela até a letra
+    // Espaço fixo de 2 linhas após a linha amarela
     y += 14;
     
     // Letra
@@ -147,6 +145,7 @@ function generateLetrasPDF() {
   });
   
   doc.save('Letras_completo.pdf');
+}
 }
 function generateSetlistPDF() {
   if (!currentMusicas || currentMusicas.length === 0) {
