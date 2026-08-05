@@ -122,9 +122,20 @@ function generateLetrasPDF() {
         doc.text(linha, 20, y);
         y += 7;
       });
+      
+      // Espaço extra após a última linha da harmonia
+      y += 4;
     }
     
-    // Uma linha vazia antes da linha amarela
+    // Espaço antes da linha amarela (garante que a linha não sobreponha)
+    y += 8;
+    
+    // Linha amarela divisória
+    doc.setDrawColor(242, 183, 5);
+    doc.setLineWidth(0.5);
+    doc.line(20, y, 190, y);
+    
+    // Duas linhas vazias após a linha amarela
     y += 14;
     
     // Linha amarela divisória
