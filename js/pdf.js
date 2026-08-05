@@ -125,7 +125,7 @@ function generateLetrasPDF() {
     }
     
     // Uma linha vazia antes da linha amarela
-    y += 7;
+    y += 10;
     
     // Linha amarela divisória
     doc.setDrawColor(242, 183, 5);
