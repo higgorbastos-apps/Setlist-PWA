@@ -50,7 +50,9 @@ function generatePDF(showData, musicas) {
     y += 14;
   });
   
-  doc.save('setlist-' + showData + '.pdf');
+  var nomeLocal = local.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '').substring(0, 25);
+var dataFormatada = showData.replace(/-/g, '');
+doc.save('SETLIST-' + nomeLocal + '-' + dataFormatada + '.pdf');
 }
 
 function printSetlist() {
@@ -179,5 +181,7 @@ function generateSetlistPDF() {
     y += 12;
   });
   
-  doc.save('setlist-' + dataShow + '.pdf');
+  var nomeLocal = local.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '').substring(0, 25);
+var dataFormatada = showData.replace(/-/g, '');
+doc.save('SETLIST-' + nomeLocal + '-' + dataFormatada + '.pdf');
 }
