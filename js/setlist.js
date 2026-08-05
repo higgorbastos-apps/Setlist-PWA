@@ -36,6 +36,7 @@ if (musica.letra) h += '<button class="icon-btn" onclick="toggleLetra(' + index 
 h += '</div>';
 if (musica.letra) {
   h += '<div class="music-letra" id="letra-' + index + '" style="display:none;font-size:0.75rem;color:var(--text-muted);margin-top:4px;padding:6px;background:var(--bg-primary);border-radius:4px;white-space:pre-wrap;">' + escapeHtml(musica.letra) + '</div>';
+  h += '<button class="btn btn-secondary" id="btn-pdf-' + index + '" onclick="gerarPDFIndividual(' + index + ')" style="display:none;margin-top:4px;font-size:0.7rem;padding:4px 10px;">📥 PDF desta música</button>';
 }
     h += '<div class="music-metadata" id="metadata-' + index + '">';
     h += '<label>Tom<input type="text" value="' + escapeHtml(musica.tom) + '" onchange="updateMusicMeta(' + index + ', \'tom\', this.value)"></label>';
