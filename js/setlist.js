@@ -28,7 +28,15 @@ function renderPreview() {
     h += '<span class="music-number">' + (index + 1) + '</span>';
     h += '<button class="icon-btn" onclick="MetadataEditor.show(' + index + ')" style="margin-left:4px;cursor:pointer;font-size:0.8rem;">EDITAR</button>';
     h += '<div class="music-content">';
-    h += '<div class="music-name"><input type="text" value="' + escapeHtml(musica.nome) + '" onchange="updateMusicName(' + index + ', this.value)"></div>';
+    h += '<div class="music-name" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">';
+h += '<input type="text" value="' + escapeHtml(musica.nome) + '" onchange="updateMusicName(' + index + ', this.value)" style="flex:1;min-width:120px;">';
+if (musica.tom) h += '<span style="font-size:0.7rem;color:var(--accent);background:var(--bg-primary);padding:2px 6px;border-radius:10px;">' + musica.tom + '</span>';
+if (musica.harmonia) h += '<span style="font-size:0.7rem;color:var(--text-muted);background:var(--bg-primary);padding:2px 6px;border-radius:10px;">' + musica.harmonia + '</span>';
+if (musica.letra) h += '<button class="icon-btn" onclick="toggleLetra(' + index + ')" title="Ver Letra" style="font-size:0.8rem;">📄</button>';
+h += '</div>';
+if (musica.letra) {
+  h += '<div class="music-letra" id="letra-' + index + '" style="display:none;font-size:0.75rem;color:var(--text-muted);margin-top:4px;padding:6px;background:var(--bg-primary);border-radius:4px;white-space:pre-wrap;">' + escapeHtml(musica.letra) + '</div>';
+}
     h += '<div class="music-metadata" id="metadata-' + index + '">';
     h += '<label>Tom<input type="text" value="' + escapeHtml(musica.tom) + '" onchange="updateMusicMeta(' + index + ', \'tom\', this.value)"></label>';
     h += '<label>Harmonia<input type="text" value="' + escapeHtml(musica.harmonia) + '" onchange="updateMusicMeta(' + index + ', \'harmonia\', this.value)"></label>';
@@ -81,4 +89,8 @@ function escapeHtml(text) {
   var div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+function toggleLetra(index) {
+  var el = document.getElementById('letra-' + index);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
