@@ -106,38 +106,37 @@ function generateLetrasPDF() {
       y += 10;
     }
     
-    // Harmonia (múltiplas linhas, empurra a linha amarela para baixo)
+    // Harmonia (múltiplas linhas)
     if (musica.harmonia) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
       doc.text('Harmonia:', 20, y);
-      y += 7;
+      y += 8;
       doc.setFont('courier', 'normal');
       doc.setFontSize(12);
       var linhasHarmonia = musica.harmonia.split('\n');
       linhasHarmonia.forEach(function(linha) {
-        y += 6;
         doc.text(linha, 25, y);
+        y += 7;
       });
-      y += 6;
     }
     
-    // Espaço entre harmonia e linha amarela
-    y += 6;
+    // Espaço após última linha da harmonia até a linha amarela
+    y += 8;
     
     // Linha amarela divisória
     doc.setDrawColor(242, 183, 5);
     doc.setLineWidth(0.5);
     doc.line(20, y, 190, y);
     
-    // Espaço fixo de 2 linhas após a linha amarela
+    // Espaço de 2 linhas após a linha amarela
     y += 14;
     
     // Letra
     doc.setFont('courier', 'normal');
     doc.setFontSize(14);
-    var linhas = musica.letra.split('\n');
-    linhas.forEach(function(linha) {
+    var linhasLetra = musica.letra.split('\n');
+    linhasLetra.forEach(function(linha) {
       if (y > 272) { doc.addPage(); y = 25; }
       doc.text(linha, 20, y);
       y += 7;
@@ -145,7 +144,6 @@ function generateLetrasPDF() {
   });
   
   doc.save('Letras_completo.pdf');
-}
 }
 function generateSetlistPDF() {
   if (!currentMusicas || currentMusicas.length === 0) {
