@@ -124,12 +124,16 @@ function generateLetrasPDF() {
       y += 4;
     }
     
+    // Espaço após harmonia até a linha amarela
+    y += 8;
+    
     // Linha separadora
-    y += 4;
     doc.setDrawColor(242, 183, 5);
     doc.setLineWidth(0.5);
     doc.line(20, y, 190, y);
-    y += 10;
+    
+    // Espaço de 2 linhas após a linha amarela até a letra
+    y += 14;
     
     // Letra
     doc.setFont('courier', 'normal');
