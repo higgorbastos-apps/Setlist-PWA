@@ -46,19 +46,7 @@ function generatePDF(showData, musicas) {
     
     doc.setFont('helvetica', 'normal');
     doc.text(musica.nome, 35, y);
-    
-    // Metadados se existirem
-    if (musica.tom || musica.harmonia || musica.bpm) {
-      y += 9;
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'italic');
-      var meta = [];
-      if (musica.tom) meta.push('Tom: ' + musica.tom);
-      if (musica.harmonia) meta.push('Harmonia: ' + musica.harmonia);
-      if (musica.bpm) meta.push('BPM: ' + musica.bpm);
-      doc.text(meta.join(' | '), 35, y);
-    }
-    
+       
     y += 14;
   });
   
@@ -100,7 +88,7 @@ function generateLetrasPDF() {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
       doc.text('Tom: ' + musica.tom, 20, y);
-      y += 10;
+      y += 8;
     }
     
     // Harmonia
