@@ -107,12 +107,21 @@ function generateLetrasPDF() {
       y += 10;
     }
     
-    // Harmonia
+     // Harmonia
     if (musica.harmonia) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
-      doc.text('Harmonia: ' + musica.harmonia, 20, y);
-      y += 10;
+      doc.text('Harmonia:', 20, y);
+      y += 7;
+      doc.setFont('courier', 'normal');
+      doc.setFontSize(12);
+      var linhasHarmonia = musica.harmonia.split('\n');
+      linhasHarmonia.forEach(function(linha) {
+        if (y > 272) { doc.addPage(); y = 25; }
+        doc.text(linha, 25, y);
+        y += 6;
+      });
+      y += 4;
     }
     
     // Linha separadora
