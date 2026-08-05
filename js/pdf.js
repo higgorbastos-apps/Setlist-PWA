@@ -65,32 +65,46 @@ function generateLetrasPDF() {
     return;
   }
   
+  // Filtrar apenas músicas com letra cadastrada
+  var musicasComLetra = currentMusicas.filter(function(m) {
+    return m.letra && m.letra.trim().length > 0;
+  });
+  
+  if (musicasComLetra.length === 0) {
+    alert('Nenhuma música com letra cadastrada.');
+    return;
+  }
+  
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
+  var primeira = true;
   
-  const local = document.getElementById('local').value || 'Setlist';
-  const dataShow = document.getElementById('dataShow').value || '';
-  
-  currentMusicas.forEach(function(musica, index) {
-    // Cada música começa em uma nova página (exceto a primeira)
-    if (index > 0) {
-      doc.addPage();
-    }
+  musicasComLetra.forEach(function(musica) {
+    if (!primeira) doc.addPage();
+    primeira = false;
     
     var y = 25;
     
-    // Título da música
+    // Título
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
+    doc.setFontSize(20);
     doc.text(musica.nome, 20, y);
-    y += 12;
+    y += 14;
     
     // Tom
     if (musica.tom) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
       doc.text('Tom: ' + musica.tom, 20, y);
-      y += 8;
+      y += 10;
+    }
+    
+    // BPM
+    if (musica.bpm) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text('BPM: ' + musica.bpm, 20, y);
+      y += 10;
     }
     
     // Harmonia
@@ -104,34 +118,23 @@ function generateLetrasPDF() {
     // Linha separadora
     y += 4;
     doc.setDrawColor(242, 183, 5);
-    doc.setLineWidth(0.3);
+    doc.setLineWidth(0.5);
     doc.line(20, y, 190, y);
-    y += 8;
+    y += 10;
     
     // Letra
-    if (musica.letra && musica.letra.trim()) {
-      doc.setFont('courier', 'normal');
-      doc.setFontSize(14);
-      var linhas = musica.letra.split('\n');
-      linhas.forEach(function(linha) {
-        if (y > 270) {
-          doc.addPage();
-          y = 25;
-        }
-        doc.text(linha, 20, y);
-        y += 7;
-      });
-    } else {
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(12);
-      doc.text('(sem letra cadastrada)', 20, y);
-    }
+    doc.setFont('courier', 'normal');
+    doc.setFontSize(14);
+    var linhas = musica.letra.split('\n');
+    linhas.forEach(function(linha) {
+      if (y > 272) { doc.addPage(); y = 25; }
+      doc.text(linha, 20, y);
+      y += 7;
+    });
   });
   
-  var nomeLocal = local.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20);
-  doc.save('Letras_' + nomeLocal + '_' + dataShow + '.pdf');
+  doc.save('Letras_completo.pdf');
 }
-
 function generateSetlistPDF() {
   if (!currentMusicas || currentMusicas.length === 0) {
     alert('Nenhuma música no preview.');
