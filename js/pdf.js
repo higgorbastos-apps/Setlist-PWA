@@ -83,6 +83,7 @@ function generateLetrasPDF() {
     primeira = false;
     
     var y = 25;
+    var linhaY;
     
     // Título
     doc.setFont('helvetica', 'bold');
@@ -106,54 +107,42 @@ function generateLetrasPDF() {
       y += 10;
     }
     
-    // Harmonia (múltiplas linhas)
+    // Harmonia
     if (musica.harmonia) {
-      // Título "Harmonia:"
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
       doc.text('Harmonia:', 20, y);
       y += 8;
-      
-      // Conteúdo da harmonia (começa na linha de baixo)
       doc.setFont('courier', 'normal');
       doc.setFontSize(12);
       var linhasHarmonia = musica.harmonia.split('\n');
-      linhasHarmonia.forEach(function(linha) {
-        doc.text(linha, 20, y);
+      for (var i = 0; i < linhasHarmonia.length; i++) {
+        doc.text(linhasHarmonia[i], 20, y);
         y += 7;
-      });
-      
-      // Espaço extra após a última linha da harmonia
-      y += 4;
+      }
+      y += 6;
     }
     
-    // Espaço antes da linha amarela (garante que a linha não sobreponha)
-    y += 8;
+    // Guarda posição da linha amarela
+    linhaY = y;
     
-    // Linha amarela divisória
-    doc.setDrawColor(242, 183, 5);
-    doc.setLineWidth(0.5);
-    doc.line(20, y, 190, y);
-    
-    // Duas linhas vazias após a linha amarela
+    // Espaço depois da linha (2 linhas = 14)
     y += 14;
     
-    // Linha amarela divisória
-    doc.setDrawColor(242, 183, 5);
-    doc.setLineWidth(0.5);
-    doc.line(20, y, 190, y);
-    
-    // Duas linhas vazias após a linha amarela
-    y += 14;
-    // Letra
+    // Letra (desenha primeiro)
     doc.setFont('courier', 'normal');
     doc.setFontSize(14);
     var linhasLetra = musica.letra.split('\n');
-    linhasLetra.forEach(function(linha) {
+    for (var j = 0; j < linhasLetra.length; j++) {
       if (y > 272) { doc.addPage(); y = 25; }
-      doc.text(linha, 20, y);
+      doc.text(linhasLetra[j], 20, y);
       y += 7;
-    });
+    }
+    
+    // Linha amarela (desenha por último, por cima de tudo)
+    doc.setDrawColor(242, 183, 5);
+    doc.setLineWidth(0.5);
+    doc.line(20, linhaY, 190, linhaY);
   });
   
   doc.save('Letras_completo.pdf');
