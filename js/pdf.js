@@ -120,7 +120,6 @@ function generateLetrasPDF() {
         doc.text(linhasHarmonia[i], 20, y);
         y += 7;
       }
-      y += 6;
     }
     
     // Guarda posição da linha amarela
