@@ -3,7 +3,6 @@
 // ============================================
 
 function generatePDF(showData, musicas) {
-  // Se não fornecidos, pega do preview atual
   if (!showData) {
     showData = document.getElementById('dataShow').value;
   }
@@ -16,23 +15,19 @@ function generatePDF(showData, musicas) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   
-  // Título
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(28);
   doc.text('SETLIST', 105, 20, { align: 'center' });
   
-  // Informações do show
   doc.setFontSize(14);
   doc.setFont('helvetica', 'normal');
   doc.text('Local: ' + local, 20, 35);
   doc.text('Data: ' + showData, 20, 43);
   
-  // Linha separadora dourada
   doc.setDrawColor(242, 183, 5);
   doc.setLineWidth(0.5);
   doc.line(20, 50, 190, 50);
   
-  // Lista de músicas
   let y = 60;
   musicas.forEach(function(musica, index) {
     if (y > 270) {
@@ -51,8 +46,8 @@ function generatePDF(showData, musicas) {
   });
   
   var nomeLocal = local.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '').substring(0, 25);
-var dataFormatada = showData.replace(/-/g, '');
-doc.save('SETLIST-' + nomeLocal + '-' + dataFormatada + '.pdf');
+  var dataFormatada = showData.replace(/-/g, '');
+  doc.save('SETLIST-' + nomeLocal + '-' + dataFormatada + '.pdf');
 }
 
 function printSetlist() {
@@ -83,15 +78,12 @@ function generateLetrasPDF() {
     primeira = false;
     
     var y = 25;
-    var linhaY;
     
-    // Título
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(20);
     doc.text(musica.nome, 20, y);
     y += 14;
     
-    // Tom
     if (musica.tom) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
@@ -99,7 +91,6 @@ function generateLetrasPDF() {
       y += 10;
     }
     
-    // BPM
     if (musica.bpm) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
@@ -107,7 +98,6 @@ function generateLetrasPDF() {
       y += 10;
     }
     
-    // Harmonia
     if (musica.harmonia) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
@@ -122,13 +112,8 @@ function generateLetrasPDF() {
       }
     }
     
-    // Guarda posição da linha amarela
-    linhaY = y;
+    y += 7;
     
-    // Espaço depois da linha (2 linhas = 14)
-    y += 14;
-    
-    // Letra (desenha primeiro)
     doc.setFont('courier', 'normal');
     doc.setFontSize(14);
     var linhasLetra = musica.letra.split('\n');
@@ -137,15 +122,11 @@ function generateLetrasPDF() {
       doc.text(linhasLetra[j], 20, y);
       y += 7;
     }
-    
-    // Linha amarela (desenha por último, por cima de tudo)
-    doc.setDrawColor(242, 183, 5);
-    doc.setLineWidth(0.5);
-    doc.line(20, linhaY, 190, linhaY);
   });
   
   doc.save('Letras_completo.pdf');
 }
+
 function generateSetlistPDF() {
   if (!currentMusicas || currentMusicas.length === 0) {
     alert('Nenhuma música no preview.');
@@ -195,7 +176,7 @@ function generateSetlistPDF() {
     y += 12;
   });
   
-var nomeLocal = local.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '').substring(0, 25);
-var dataFormatada = showData.replace(/-/g, '');
-doc.save('SETLIST-' + nomeLocal + '-' + dataFormatada + '.pdf');
+  var nomeLocal = local.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '').substring(0, 25);
+  var dataFormatada = showData.replace(/-/g, '');
+  doc.save('SETLIST-' + nomeLocal + '-' + dataFormatada + '.pdf');
 }
